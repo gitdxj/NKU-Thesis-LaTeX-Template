@@ -1,0 +1,274 @@
+% -*- coding: utf-8 -*-
+% !TeX root = main.tex
+\chapter{求解亥姆霍兹方程}
+三维笛卡尔坐标系下的亥姆霍兹方程为：
+\begin{equation}\label{ORIG}
+\Delta u(x,y,z) + \lambda u(x,y,z) = f(x,y,z)
+\end{equation}  
+
+其中$u$是待求解的函数，$\lambda$是常数，$f$是已知函数，$\Delta$为拉普拉斯算子，即$\frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2}+\frac{\partial^2}{\partial z^2}$。函数$u$和$f$定义在矩形空间
+$x_0 \leq x \leq x_{N_x-1}, y_0 \leq y \leq y_{N_y-1}, z_0 \leq z \leq z_{N_z-1}$，
+$\lambda$通常小于或等于0。当$\lambda > 0$或$\lambda = 0$时，亥姆霍兹方程可能无解；若$\lambda = 0$，是为泊松方程；若$f =0 $，是为拉普拉斯方程。  
+
+下面我们使用有限差分法来求解亥姆霍兹方程。为了直观，首先我们用网格点来表示三维坐标（在此文中我们一般将$i$留给虚数）：
+$$x_j = x_0 + j\Delta_x, \qquad j = 0,1,\cdots,J$$
+$$y_k = y_0 + k\Delta_y, \qquad k = 0,1,\cdots,K$$
+$$z_l = z_0 + l\Delta_z, \qquad l = 0,1,\cdots,L$$  
+
+于是我们可以将$u(x_j,y_k,z_l)$表示为$u_{j,k,l}$。同理，$f(x_j,y_k,z_l)$可以表示为$f_{j,k,l}$。  
+函数$u$在一点上$x$方向的导数可以表示为：
+$$
+\frac{\partial u}{\partial x} = \frac{u_{j,k,l}-u_{j-1,k,l}}{\Delta_x}
+$$  
+  
+$u$在一点上$x$方向的二阶导数可以表示为：
+$$
+\frac{\partial^2 u}{\partial x^2} = \frac{u_{j+1,k,l}-2u_{j,k,l}+u_{j-1,k,l}}{{\Delta_x}^2}
+$$  
+
+将原方程 \eqref{ORIG} 按照上述方法将其离散化（discretization），我们可以得到：
+\begin{equation} \label{DISCRET}
+\begin{split}
+\frac{u_{j+1,k,l}-2u_{j,k,l}+u_{j-1,k,l}}{{\Delta_x}^2} +
+\frac{u_{j,k+1,l}-2u_{j,k,l}+u_{j,k-1,l}}{{\Delta_y}^2} + \\
+\frac{u_{j,k,l+1}-2u_{j,k,l}+u_{j,k,l-1}}{{\Delta_z}^2} + 
+\lambda u_{j,k,l} = f_{j,k,l}
+\end{split}
+\end{equation}  
+
+为了简单起见，我们假设$\Delta_x = \Delta_y = \Delta_z = \Delta$，得：
+\begin{equation} \label{DISC}
+\begin{split}
+u_{j+1,k,l}+u_{j-1,k,l}+u_{j,k+1,l}+u_{j,k-1,l}+u_{j,k,l+1}+u_{j,k,l-1}\\
++(\lambda \Delta^2 - 6)u_{j,k,l} = \Delta^2 f_{j,k,l}
+\end{split}
+\end{equation}
+
+
+\section{使用傅里叶变换的方法求解}
+首先，函数$u$在$x,y,z$三个方向上的离散傅里叶逆变换为：
+\begin{equation} \label{UIDFT}
+u_{j,k,l}=\frac{1}{JKL}\Sigma_{m=0}^{J-1}\Sigma_{n=0}^{K-1}\Sigma_{v=0}^{L-1}
+\hat{u}_{m,n,v}e^{-i\frac{2\pi}{J}jm}e^{-i\frac{2\pi}{K}kn}e^{-i\frac{2\pi}{L}lv}
+\end{equation}  
+
+同理，函数$f$在$x,y,z$三个方向上的离散傅里叶逆变换为：
+\begin{equation} \label{FIDFT}
+f_{j,k,l}=\frac{1}{JKL}\Sigma_{m=0}^{J-1}\Sigma_{n=0}^{K-1}\Sigma_{v=0}^{L-1}
+\hat{f}_{m,n,v}e^{-i\frac{2\pi}{J}jm}e^{-i\frac{2\pi}{K}kn}e^{-i\frac{2\pi}{L}lv}
+\end{equation}
+
+将 \eqref{UIDFT} 和 \eqref{FIDFT} 代入 \eqref{DISCRET} 中，得到：
+\begin{equation}
+(e^{i\frac{2\pi}{J}m} +e^{-i\frac{2\pi}{J}m}+
+e^{i\frac{2\pi}{K}n} +e^{-i\frac{2\pi}{K}n}+
+e^{i\frac{2\pi}{L}v} +e^{-i\frac{2\pi}{K}n}+ \lambda \Delta^2 - 6)
+\hat{u}_{mnv} = \Delta^2 \hat{f}_{mnv}
+\end{equation}  
+
+使用欧拉公式$e^{ix} = cosx + isinx$将上式化简得：
+\begin{equation}
+(2cos\frac{2\pi m}{J}+2cos\frac{2\pi n}{K}+2cos\frac{2\pi v}{L} + \lambda \Delta^2 - 6)
+\hat{u}_{m,n,v} = \Delta^2 \hat{f}_{m,n,v}
+\end{equation}  
+
+整理后可得：
+\begin{equation} \label{UMNV}
+\hat{u}_{m,n,v}= \frac{\Delta^2 \hat{f}_{m,n,v}}
+{2cos\frac{2\pi m}{J}+2cos\frac{2\pi n}{K}+2cos\frac{2\pi v}{L} + \lambda \Delta^2 - 6}
+\end{equation}  
+
+下面我们总结使用傅里叶变换法来求解亥姆霍兹方程的步骤：  
+
+(a)对函数$f$做傅里叶变换
+\begin{equation}
+\hat{f}_{m,n,v}=\Sigma_{m=0}^{J-1}\Sigma_{n=0}^{K-1}\Sigma_{v=0}^{L-1}
+f_{j,k,l}e^{i\frac{2\pi}{J}jm}e^{i\frac{2\pi}{K}kn}e^{i\frac{2\pi}{L}lv}
+\end{equation}  
+
+(b)根据公式 \eqref{UMNV}  计算$\hat{u}_{m,n,v}$  
+
+(c)根据公式 \eqref{UIDFT} 对$\hat{u}_{m,n,v}$进行傅里叶逆变换，得到$u_{j,k,l}$
+
+上述方法仅适用于周期边界条件（Periodic boundary condition）。即：
+$$
+u_{j,k,l} = u_{j+J,k,l} = u_{j,k+K,l} = u_{j,k,l+L}
+$$
+
+
+% 狄利克雷边界条件
+\section{狄利克雷边界条件}
+
+接下来我们考虑狄利克雷边界条件（Dirichlet boundary condition）,假设在边界上$u=0$（齐次边界条件），那么我们需要进行正弦变换。  
+函数$u$的离散正弦逆变换为：
+\begin{equation} \label{USINE}
+u_{j,k,l}=\frac{2}{J}\frac{2}{K}\frac{2}{L}\Sigma_{m=0}^{J-1}\Sigma_{n=0}^{k-1}\Sigma_{v=0}^{L-1}
+\hat{u}_{m,n,v}sin\frac{\pi jm}{J}sin\frac{\pi kn}{K}sin\frac{\pi lv}{L}
+\end{equation}  
+
+(a)对函数$f$做离散正弦变换
+\begin{equation}
+\hat{f}_{m,n,v}=\Sigma_{m=0}^{J-1}\Sigma_{n=0}^{k-1}\Sigma_{v=0}^{L-1}
+\hat{f}_{j,k,l}sin\frac{\pi jm}{J}sin\frac{\pi kn}{K}sin\frac{\pi lv}{L}
+\end{equation}  
+
+(b)计算$\hat{u}_{mnv}$
+\begin{equation} \label{UMNV2}
+\hat{u}_{m,n,v}= \frac{\Delta^2 \hat{f}_{m,n,v}}
+{2cos\frac{\pi m}{J}+2cos\frac{\pi n}{K}+2cos\frac{\pi v}{L} + \lambda \Delta^2 - 6}
+\end{equation} 
+
+(c)根据公式 \eqref{USINE} 对$\hat{u}_{mnv}$进行正弦逆变换得到 $u_{j,k,l}$
+
+\subsection{解决非齐次边界条件}
+我们上一节所描述的算法仅仅适用于齐次边界条件的情况，即在任意边界上都有$u=0$。非齐次边界条件是指函数$u$在某一边界上不为0。在这里我们不妨假设在$y=K\Delta$时,$u=g(x,z)$，而在其他边界上$u=0$。  
+
+为了解决非齐次边界条件的问题我们设$u = u^{'} + u^{B}$，即把$u$拆分为$ u^{'}$和$u^{B}$。$ u^{'}$和$u^{B}$的定义如下：
+$$
+u^{'}(x,y,z)=
+\begin{cases}
+u(x,y,z) &  \text{(x,y,z)不位于边界}\\
+0 &  \text{(x,y,z)位于边界}
+\end{cases}
+$$
+
+$$
+u^{B}(x,y,z)=
+\begin{cases}
+0 &  \text{(x,y,z)不位于边界}\\
+u(x,y,z) &  \text{(x,y,z)位于边界}
+\end{cases}
+$$  
+
+根据上面的定义和我们的假设，$u^{B}$只有在$y=K\Delta$时不为0，即
+$$
+u^{B}(x,y,z)=
+\begin{cases}
+0 &  y=K\Delta  \\
+g(x,z) &  y\neq K\Delta
+\end{cases}
+$$  
+
+我们将$u = u^{'} + u^{B}$代入原方程 \eqref{ORIG} 得到：
+
+\begin{equation} \label{ORIGINHOMO}
+\Delta u^{'} + \Delta u^{B} + \lambda u^{'} + \lambda u^{B} = f
+\end{equation}  
+
+将 \eqref{ORIGINHOMO} 离散化后得到：
+\begin{equation} \label{DISCINHOMO}
+\begin{split}
+u'_{j+1,k,l}+u'_{j-1,k,l}+u'_{j,k+1,l}+u'_{j,k-1,l}+u'_{j,k,l+1}+u'_{j,k,l-1}+\\
+u^{B}_{j+1,k,l}+u^{B}_{j-1,k,l}+u^{B}_{j,k+1,l}+u^{B}_{j,k-1,l}+u^{B}_{j,k,l+1}+u^{B}_{j,k,l-1}+\\
+(\lambda \Delta^2 - 6)u'_{j,k,l} + (\lambda \Delta^2 - 6)u^{B}_{j,k,l} = \Delta^2 f_{j,k,l}
+\end{split}
+\end{equation}  
+
+根据$u'$和$u^{B}$的定义，$u^{B}_{j,k,l}$仅在$k=K$时等于$g_{j,l}$，其余情况下均为0。所以在 \eqref{DISCINHOMO} 中，仅当$k=K-1$时，方程中的$u^{B}$有不为0的项：
+$$
+u'_{j+1,k,l}+u'_{j-1,k,l}+u'_{j,k+1,l}+u'_{j,k-1,l}+u'_{j,k,l+1}+u'_{j,k,l-1}+u^{B}_{j,K,l}+\\
+(\lambda \Delta^2 - 6)u'_{j,k,l} = \Delta^2 f_{j,k,l}
+$$
+
+将$u^{B}_{j,K,l} = g_{j,l}$带入上式并将其移动到公式右边得：
+$$
+u'_{j+1,k,l}+u'_{j-1,k,l}+u'_{j,k+1,l}+u'_{j,k-1,l}+u'_{j,k,l+1}+u'_{j,k,l-1}+(\lambda \Delta^2 - 6)u'_{j,k,l} \\
+= \Delta^2 f_{j,k,l} - g_{j,l}
+$$
+
+而在$k \neq K-1$时，\eqref{DISCINHOMO} 中各$u^{B}$项均为0，得到的公式为：
+$$
+u'_{j+1,k,l}+u'_{j-1,k,l}+u'_{j,k+1,l}+u'_{j,k-1,l}+u'_{j,k,l+1}+u'_{j,k,l-1}+(\lambda \Delta^2 - 6)u'_{j,k,l} = \Delta^2 f_{j,k,l}
+$$  
+
+其形式与齐次边界条件下得到的离散化公式 \eqref{DISC} 相同。
+于是我们可以使用先前求解齐次边界条件的方法来求解$u'$，$u^{B}$是已知的，所以根据$u = u' + u^{B}$便可以求得$u$。  
+
+下面我们总结非齐次边界条件下的求解方法：  
+
+(a)构造新的$f'$：
+$$
+f'=
+\begin{cases}
+f &  \text{不在边界上} \\
+f-u^{B} &  \text{在边界上}
+\end{cases}
+$$  
+
+(b)对$f'$按照齐次边界条件进行求解得到$u'$  
+
+(c)由公式$u = u' + u^{B}$计算得到函数$u$
+
+% 诺曼边界条件
+\section{诺伊曼边界条件}
+接下来我们考虑诺伊曼边界条件（Neumann boundary condition），假设在边界上$\Delta u = 0$（齐次边界条件），那么我们需要进行余弦变换。函数$u$的离散余弦逆变换为：
+\begin{equation} \label{UCOS}
+u_{j,k,l}=\frac{2}{J}\frac{2}{K}\frac{2}{L}\Sigma_{m=0}^{J}\Sigma_{n=0}^{K}\Sigma_{v=0}^{L}
+\hat{u}_{m,n,v}cos\frac{\pi jm}{J}cos\frac{\pi kn}{K}cos\frac{\pi lv}{L}
+\end{equation}  
+
+诺伊曼边界条件下的求解步骤为：  
+
+(a)对函数$f$做离散余弦变换
+\begin{equation}
+\hat{f}_{m,n,v}=\Sigma_{m=0}^{J}\Sigma_{n=0}^{K}\Sigma_{v=0}^{L}
+\hat{f}_{j,k,l}cos\frac{\pi jm}{J}cos\frac{\pi kn}{K}cos\frac{\pi lv}{L}
+\end{equation}  
+
+(b)计算$\hat{u}_{mnv}$
+\begin{equation} \label{UMNV3}
+\hat{u}_{m,n,v}= \frac{\Delta^2 \hat{f}_{m,n,v}}
+{2cos\frac{\pi m}{J}+2cos\frac{\pi n}{K}+2cos\frac{\pi v}{L} + \lambda \Delta^2 - 6}
+\end{equation} 
+
+(c)根据公式 \eqref{UCOS} 对$\hat{u}_{mnv}$进行离散余弦逆变换得到 $u_{j,k,l}$  
+
+对于非齐次边界条件，同样地，我们可以做类似于狄利克雷边界条件中的处理，将求解非齐次边界条件的问题转化为求解齐次边界条件的问题。
+
+
+\section{更复杂的边界条件}
+我们在以上章节讨论的是函数的所有边界条件均为相同的情况下。而在实际的问题中，每一个方向上的两个边界条件（左边界和右边界）都可能不同（狄利克雷边界条件和诺伊曼边界条件），于是再加上周期边界条件，每一个方向上的边界条件就有五种可能：
+
+\begin{itemize}
+\item[·]情形1：周期边界条件
+\item[·]情形2：左边和右边均为狄利克雷边界条件
+\item[·]情形3：左边为狄利克雷边界条件，右边为诺伊曼边界条件
+\item[·]情形4：左右均为诺伊曼边界条件
+\item[·]情形5：左边为诺伊曼边界条件，右边为狄利克雷边界条件
+\end{itemize}  
+
+对于这六种情形，需要进行的傅里叶变换的类型也不相同，我们将其总结于表 \ref{BDFFT} ：  
+\begin{table}[H]
+\centering %居中
+\caption{不同边界条件对应的傅里叶变换}
+\label{BDFFT}
+\scalebox{1.1}{
+\begin{tabular}{ll}
+\hline
+边界条件& 对应的傅里叶变换\\
+\hline
+情形1& $u_j = \Sigma^{N-1}_{k=0}\hat{u}_k e^{i\frac{2\pi}{N}kj}$\\% DFT IDFT
+%\hline
+情形2& $u_j = \Sigma^{N-1}_{k=1}\hat{u}_k sin\frac{\pi k j}{N}$\\%DST1
+%\hline
+情形3& $u_j = \Sigma^{N}_{k=1}\hat{u}_k sin(\frac{\pi}{N}(k-\frac{1}{2})j)$\\%DST3 DST2
+%\hline
+情形4& $u_j = \Sigma^{N-1}_{k=1}\hat{u}_k cos\frac{\pi k j}{N}$\\% DCT1
+%\hline
+情形5& $u_j = \Sigma^{N-1}_{k=1}\hat{u}_k cos(\frac{\pi}{N}(k+\frac{1}{2})j)$\\ %DCT3 DCT2
+\hline
+\end{tabular}}
+\end{table}  
+
+三维笛卡尔坐标系中的三个维度上，每一个维度可能对应这五种情形之一，我们便需要在这三个维度上分别做对应的傅里叶变换。  
+
+\section{本章小节}
+在这一章，我们介绍了基于离散傅里叶变换的亥姆霍兹方程求解法。详细介绍了在边界条件为周期边界条件、狄利克雷边界条件和诺伊曼边界条件下进行求解具体的步骤。并解决了在遇到非齐次边界条件时，通过采取简单的转换将问题转换为求解齐次边界条件的亥姆霍兹方程。最后我们总结了当求解区间的三个维度上具有更复杂的边界条件时，每个维度上做相应的傅里叶变换的类型。
+
+
+
+
+
+
+
+

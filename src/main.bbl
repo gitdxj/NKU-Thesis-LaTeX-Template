@@ -1,0 +1,128 @@
+\begin{thebibliography}{10}
+
+\bibitem{biber3}
+Giulia Adriani, Marco~Donato de~Tullio, Mauro Ferrari, Fazle Hussain, Giuseppe
+  Pascazio, Xuewu Liu, and Paolo Decuzzi.
+\newblock The preferential targeting of the diseased microvasculature by
+  disk-like particles.
+\newblock {\em Biomaterials}, 33(22):5504--5513, 2012.
+
+\bibitem{biber6}
+Ronald~F Boisvert.
+\newblock A fourth-order-accurate fourier method for the helmholtz equation in
+  three dimensions.
+\newblock {\em ACM Transactions on Mathematical Software (TOMS)},
+  13(3):221--234, 1987.
+
+\bibitem{biber8}
+Ronald~Newbold Bracewell and Ronald~N Bracewell.
+\newblock {\em The Fourier transform and its applications}, volume 31999.
+\newblock McGraw-Hill New York, 1986.
+
+\bibitem{biber7}
+Elena Braverman, Moshe Israeli, and Amir Averbuch.
+\newblock A fast spectral solver for a 3d helmholtz equation.
+\newblock {\em SIAM Journal on Scientific Computing}, 20(6):2237--2260, 1999.
+
+\bibitem{biber4}
+Chen Chen, Shuyu Hou, Dacheng Ren, Mingming Ren, and Qi~Wang.
+\newblock 3-d spatio--temporal structures of biofilms in a water channel.
+\newblock {\em Mathematical Methods in the Applied Sciences},
+  38(18):4461--4478, 2015.
+
+\bibitem{biber10}
+Matteo Frigo and Steven~G Johnson.
+\newblock The design and implementation of fftw3.
+\newblock {\em Proceedings of the IEEE}, 93(2):216--231, 2005.
+
+\bibitem{biber5}
+Elias~N. Houstis and Theodore~S. Papatheodorou.
+\newblock High-order fast elliptic equation solvers.
+\newblock {\em ACM Transactions on Mathematical Software (TOMS)},
+  5(4):431--441, 1979.
+
+\bibitem{biber18}
+Jose~L Jodra, Ibai Gurrutxaga, and Javier Muguerza.
+\newblock Efficient 3d transpositions in graphics processing units.
+\newblock {\em International Journal of Parallel Programming}, 43(5):876--891,
+  2015.
+
+\bibitem{multiGPU}
+Jose~L Jodra, Ibai Gurrutxaga, Javier Muguerza, and Ainhoa Yera.
+\newblock Solving poisson’s equation using fft in a gpu cluster.
+\newblock {\em Journal of Parallel and Distributed Computing}, 102:28--36,
+  2017.
+
+\bibitem{biber11}
+Stephen~A Martucci.
+\newblock Symmetric convolution and the discrete sine and cosine transforms.
+\newblock {\em IEEE Transactions on Signal Processing}, 42(5):1038--1051, 1994.
+
+\bibitem{cuda}
+Nvidia.
+\newblock Cuda toolkit documentation.
+\newblock Website, 2020.
+\newblock {https://docs.nvidia.com/cuda/}.
+
+\bibitem{biber2}
+J~Rafael Pacheco, Kang~Ping Chen, Arturo Pacheco-Vega, Baisong Chen, and Mark~A
+  Hayes.
+\newblock Chaotic mixing enhancement in electro-osmotic flows by random period
+  modulation.
+\newblock {\em Physics Letters A}, 372(7):1001--1008, 2008.
+
+\bibitem{biber9}
+William~H Press, Saul~A Teukolsky, William~T Vetterling, and Brian~P Flannery.
+\newblock {\em Numerical recipes 3rd edition: The art of scientific computing}.
+\newblock Cambridge university press, 2007.
+
+\bibitem{biber17}
+Garry Rodrigue.
+\newblock {\em Parallel computations}, volume~1.
+\newblock Elsevier, 2014.
+
+\bibitem{biber14}
+Jing Wu, Joseph JaJa, and Elias Balaras.
+\newblock An optimized fft-based direct poisson solver on cuda gpus.
+\newblock {\em IEEE Transactions on Parallel and Distributed Systems},
+  25(3):550--559, 2013.
+
+\bibitem{biber1}
+Jia Zhao and Qi~Wang.
+\newblock Three-dimensional numerical simulations of biofilm dynamics with
+  quorum sensing in a flow cell.
+\newblock {\em Bulletin of mathematical biology}, 79(4):884--919, 2017.
+
+\bibitem{zh5}
+刘金硕, 刘天晓, 吴慧, 曾秋梅, 任梦菲, and 顾宜淳.
+\newblock {\em 从图形处理器到基于 GPU 的通用计算}.
+\newblock PhD thesis, 2013.
+
+\bibitem{zh6}
+徐朝辉, 赵海生, 许正文, 吴健, 冯杰, 徐彬, 马征征, and
+  黄文龙.
+\newblock
+  基于化学物质释放的五点傅里叶变换求解泊松方程的方法.
+\newblock {\em 电波科学学报}, 32(6):638--643, 2017.
+
+\bibitem{zh2}
+沈玉琳, 金能智, 孙一桐, 者建武, and 马尧.
+\newblock Gpgpu 加速生物序列比对研究进展.
+\newblock {\em 生物信息学}, 11(2):115--119, 2013.
+
+\bibitem{zh1}
+袁涛, 马艳, and 刘定生.
+\newblock Gpu 在遥感图像处理中的应用综述.
+\newblock {\em 遥感信息}, (6):110--117, 2012.
+
+\bibitem{zh4}
+覃金帛, 曾志强, 梁藉, 杨明祥, and 张健.
+\newblock Gpu 并行优化技术在水利计算中的应用综述.
+\newblock {\em 计算机工程与应用}, 54(3):23--29, 2018.
+
+\bibitem{zh3}
+鲍建樟, 丰鑫田, and 于建国.
+\newblock Gpu 引发的计算化学革命.
+\newblock {\em 物理化学学报}, 27(09):2019--2026, 2011.
+
+\end{thebibliography}

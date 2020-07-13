@@ -1,0 +1,107 @@
+% -*- coding: utf-8 -*-
+
+% 算法可分页
+\makeatletter
+\newenvironment{breakablealgorithm}
+  {% \begin{breakablealgorithm}
+   \begin{center}
+     \refstepcounter{algorithm}% New algorithm
+     \hrule height.8pt depth0pt \kern2pt% \@fs@pre for \@fs@ruled
+     \renewcommand{\caption}[2][\relax]{% Make a new \caption
+       {\raggedright\textbf{\ALG@name~\thealgorithm} ##2\par}%
+       \ifx\relax##1\relax % #1 is \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##2}%
+       \else % #1 is not \relax
+         \addcontentsline{loa}{algorithm}{\protect\numberline{\thealgorithm}##1}%
+       \fi
+       \kern2pt\hrule\kern2pt
+     }
+  }{% \end{breakablealgorithm}
+     \kern2pt\hrule\relax% \@fs@post for \@fs@ruled
+   \end{center}
+  }
+\makeatother
+
+\documentclass[12pt,openright]{book}
+
+\usepackage{ifxetex}
+\ifxetex
+  \usepackage[bookmarksnumbered]{hyperref}
+\else
+  \usepackage[unicode,bookmarksnumbered]{hyperref}
+\fi
+
+\usepackage[emptydoublepage]{NKThesis}   % 中文
+%\usepackage[emptydoublepage,English]{NKThesis} % 英文
+\usepackage{amssymb}
+
+%   根据需要选择 biblatex 宏包选项. 使用biblatex管理参考文献，详见百度
+%\usepackage[sorting=none]{biblatex}
+%\usepackage[backend=biber,style=gb7714-2015,seconds=true,gbnamefmt=lowercase,gbpub=false]{biblatex}
+\usepackage{cite}
+\hypersetup{colorlinks=true,
+            pdfborder=0 0 1,
+            citecolor=black,
+            linkcolor=black}
+%\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{cases}
+\usepackage{ulem}
+\usepackage{listings} 
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{url}
+%\addbibresource{nkthesis.bib}
+%\DeclareBibliographyCategory{cited}
+%\AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}}
+
+\newtheorem{Theorem}{\hskip 2em 定理}[chapter]
+\newtheorem{Lemma}[Theorem]{\hskip 2em 引理}
+\newtheorem{Corollary}[Theorem]{\hskip 2em 推论}
+\newtheorem{Proposition}[Theorem]{\hskip 2em 命题}
+\newtheorem{Definition}[Theorem]{\hskip 2em 定义}
+\newtheorem{Example}[Theorem]{\hskip 2em 例}
+%\newcommand{\upcite}[1]{\textsuperscript{\textsuperscript{\cite{#1}}}}
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}} %放在导言区 table
+
+\begin{document}
+
+\bibliographystyle{plain}
+
+%  设置基本信息
+%  注意:  逗号`,'是项目分隔符. 如果某一项的值出现逗号, 应放在花括号内, 如 {,}
+%
+
+\NKTsetup{%
+  论文题目(中文) = 为中国之崛起而读书,
+  论文题目(中文)(第二行) =知中国服务中国,
+  论文题目(英文) =  Wei zhong guo zhi jue qi er du shu
+  论文题目(英文)(第二行) = zhi zhongguo fuwu zhongguo,
+%   论文题目(英文)(第三行) =无,
+  学号           = 161099,
+  姓名          = 周恩来,
+  学院          = 中国,
+  系别          = 服务中国,
+  专业           = 服务中国,
+  年级          = 1919,
+  论文完成时间   = 1919年11月,
+  指导教师       = 张伯苓,
+  % 如果有校外导师则填写校外导师。没有填无
+%   校外导师      =无,
+  校外导师     = 无,
+  }
+
+% 这里包含需要到文件
+\include{abstract}
+\tableofcontents  % 目录
+\include{introduction}
+\include{experiment}
+\include{summary}
+\include{references}
+\include{acknowledgements}
+\include{appendices}
+%\include{resume}
+\end{document}
